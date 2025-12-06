@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Employee Productivity Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #2c2c2c;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .nav-title {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-cyan {
+            background-color: #68cadd;
+        }
+
+        .btn-blue {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-predict {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        /* Main content */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.4);
+            z-index: 1;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            background-color: rgba(255,255,255,0.85);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .hero-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #111;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+                gap: 10px;
+            }
+            .nav-title {
+                margin-bottom: 5px;
+            }
+            .hero-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+<div class="nav-buttons">
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('home') }}'">Home</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('about') }}'">About</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('predict_page') }}'">Predict</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('submit_page') }}'">Results</button>
+</div>
+</nav>
+
+
+    <!-- Main content -->
+    <main>
+        <div class="overlay"></div>
+        <div class="content-container">
+            <h1>About This Project</h1>
+            <p class="hero-text">
+                This web application predicts employee productivity using machine learning models, including Linear Regression, Random Forest, and XGBoost. 
+                It allows businesses to analyze employee performance, optimize workforce management, and improve overall operational efficiency. 
+                By inputting key parameters such as overtime, idle time, team, department, and more, users can get a detailed productivity prediction.
+            </p>
+        </div>
+    </main>
+
+    <!-- JS Navigation -->
+    <script>
+        function handleNav(page) {
+            console.log(`Navigating to ${page}`);
+            if(page === 'Predict') {
+                alert("This would take you to the Machine Learning Prediction model page.");
+            } else {
+                console.log("Current view: " + page);
+            }
+        }
+    </script>
+
+</body>
+</html>

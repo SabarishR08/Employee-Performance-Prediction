@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predict Productivity</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { 
+        min-height:100vh; display:flex; flex-direction:column; 
+        background-color:#7B68EE;
+        background-image: linear-gradient(rgba(123,104,238,0.85), rgba(123,104,238,0.85)), 
+                          url('https://img.freepik.com/free-vector/business-team-brainstorming-discussing-startup-project_74855-6909.jpg?w=2000');
+        background-size:cover; background-position:center; background-blend-mode:multiply; 
+    }
+    nav { background-color:#2c2c2c; height:60px; display:flex; align-items:center; justify-content:space-between;
+          padding:0 20px; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:10; }
+    .nav-title { color:white; font-weight:600; font-size:1.1rem; letter-spacing:0.5px; }
+    .nav-buttons { display:flex; gap:10px; }
+    .btn { padding:8px 20px; border:none; border-radius:4px; font-size:1rem; cursor:pointer; transition:opacity 0.2s; text-decoration:none; font-weight:500; }
+    .btn:hover { opacity:0.9; }
+    .btn-cyan { background-color:#68cadd; color:#000; }
+    .btn-predict { background-color:#337ab7; color:white; }
+
+    main { flex:1; display:flex; justify-content:center; align-items:flex-start; padding:40px 20px; gap:30px; flex-wrap:wrap; }
+
+    /* Form Container */
+    .form-container, .bulk-container { 
+        background: rgba(255,255,255,0.5); padding:30px; border-radius:12px; max-width:450px; width:100%;
+        display:grid; grid-template-columns:1fr 1fr; gap:20px 20px; box-shadow:0 8px 20px rgba(0,0,0,0.2); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .form-group { display:flex; flex-direction:column; margin-bottom:15px; }
+    label { font-weight:600; margin-bottom:5px; color:#333; text-transform:lowercase; }
+    input[type="text"], input[type="number"], input[type="file"] { 
+        height:40px; border-radius:6px; padding:0 10px; border:none; font-size:1rem; box-shadow:0 2px 4px rgba(0,0,0,0.1); background: rgba(255,255,255,0.7); transition: all 0.3s ease;
+    }
+    input:focus { outline:none; background: rgba(255,255,255,0.85); box-shadow: 0 0 8px rgba(104, 202, 221, 0.8); }
+
+    .submit-container { grid-column:1 / -1; text-align:center; margin-top:20px; }
+    .btn-submit { background-color:#66bb6a; color:white; font-weight:bold; padding:10px 40px; font-size:1rem; border-radius:6px; box-shadow:0 3px 6px rgba(0,0,0,0.2); text-transform:uppercase; cursor:pointer; transition: all 0.3s ease; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow:0 5px 10px rgba(0,0,0,0.3); }
+
+    /* Bulk upload */
+    .bulk-container { grid-template-columns:1fr; text-align:center; }
+    .bulk-container input[type="file"] { margin-bottom:20px; }
+
+    @media(max-width:768px) { 
+        .form-container, .bulk-container { grid-template-columns:1fr; gap:15px; }
+        main { flex-direction:column; align-items:center; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+<div class="nav-buttons">
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('home') }}'">Home</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('about') }}'">About</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('predict_page') }}'">Predict</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('submit_page') }}'">Results</button>
+</div>
+</nav>
+
+
+<!-- Main Section -->
+<main>
+    <!-- Single Prediction Form -->
+    <form class="form-container" method="POST" action="/pred">
+        <div class="column">
+            <div class="form-group"><label>quarter</label><input type="text" name="quarter" required></div>
+            <div class="form-group"><label>day</label><input type="text" name="day" required></div>
+            <div class="form-group"><label>targeted_productivity</label><input type="number" step="0.01" name="targeted_productivity" required></div>
+            <div class="form-group"><label>over_time</label><input type="number" name="over_time" required></div>
+            <div class="form-group"><label>idle_time</label><input type="number" step="0.01" name="idle_time" required></div>
+            <div class="form-group"><label>no_of_style_change</label><input type="number" name="no_of_style_change" required></div>
+            <div class="form-group"><label>month</label><input type="text" name="month" required></div>
+        </div>
+        <div class="column">
+            <div class="form-group"><label>department</label><input type="text" name="department" required></div>
+            <div class="form-group"><label>team</label><input type="number" name="team" required></div>
+            <div class="form-group"><label>smv</label><input type="number" step="0.01" name="smv" required></div>
+            <div class="form-group"><label>incentive</label><input type="number" name="incentive" required></div>
+            <div class="form-group"><label>idle_men</label><input type="number" name="idle_men" required></div>
+            <div class="form-group"><label>no_of_workers</label><input type="number" name="no_of_workers" required></div>
+        </div>
+        <div class="submit-container">
+            <button type="submit" class="btn-submit">Submit</button>
+        </div>
+    </form>
+
+    <!-- Bulk Prediction Upload -->
+    <form class="bulk-container" method="POST" action="/bulk_predict" enctype="multipart/form-data">
+        <h3>Bulk Prediction via CSV</h3>
+        <input type="file" name="file" accept=".csv" required>
+        <div class="submit-container">
+            <button type="submit" class="btn-submit">Upload & Predict</button>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

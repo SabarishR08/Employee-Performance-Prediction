@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Productivity Prediction</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
+
+    body {
+        min-height:100vh;
+        background: linear-gradient(rgba(123,104,238,0.85), rgba(123,104,238,0.85)),
+                    url('https://img.freepik.com/free-vector/business-team-brainstorming-discussing-startup-project_74855-6909.jpg?w=2000');
+        background-size:cover;
+        background-position:center;
+        background-blend-mode:multiply;
+        display:flex;
+        flex-direction:column;
+    }
+
+    /* Navigation */
+    nav {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px;
+        height:60px;
+        background-color: rgba(44,44,44,0.95);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        position: sticky;
+        top:0;
+        z-index:10;
+    }
+
+    .nav-title { color:white; font-weight:600; font-size:1.2rem; letter-spacing:0.5px; }
+    .nav-buttons { display:flex; gap:10px; }
+    .btn { padding:8px 20px; border:none; border-radius:4px; font-size:1rem; cursor:pointer; font-weight:500; transition:0.2s; }
+    .btn:hover { opacity:0.9; }
+    .btn-cyan { background-color:#68cadd; color:#000; }
+    .btn-predict { background-color:#337ab7; color:white; }
+
+    /* Hero Section */
+    main {
+        flex:1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:40px 20px;
+    }
+
+    .glass-card {
+        background: rgba(255,255,255,0.5);
+        backdrop-filter: blur(12px);
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.3);
+        padding:40px;
+        max-width:900px;
+        width:100%;
+        text-align:center;
+        box-shadow:0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .glass-card h1 {
+        font-size:2rem;
+        color:#111;
+        margin-bottom:1rem;
+    }
+
+    .glass-card p {
+        font-size:1.1rem;
+        line-height:1.6;
+        color:#222;
+        margin-bottom:2rem;
+        font-weight:400;
+    }
+
+    .glass-card .btn-container {
+        display:flex;
+        justify-content:center;
+        gap:20px;
+    }
+
+    .glass-card .btn-container .btn-large {
+        padding:12px 30px;
+        border-radius:6px;
+        font-size:1rem;
+        font-weight:600;
+        cursor:pointer;
+        text-decoration:none;
+        transition:0.3s;
+    }
+
+    .btn-large.btn-primary { background-color:#337ab7; color:white; }
+    .btn-large.btn-primary:hover { transform:translateY(-2px); opacity:0.9; }
+    .btn-large.btn-outline { background:transparent; border:2px solid #68cadd; color:#68cadd; }
+    .btn-large.btn-outline:hover { background:rgba(104,202,221,0.1); }
+
+    @media(max-width:768px){
+        .glass-card { padding:30px 20px; }
+        .glass-card h1 { font-size:1.5rem; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+<div class="nav-buttons">
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('home') }}'">Home</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('about') }}'">About</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('predict_page') }}'">Predict</button>
+    <button class="btn btn-cyan" onclick="window.location.href='{{ url_for('submit_page') }}'">Results</button>
+</div>
+</nav>
+
+
+<!-- Hero Section -->
+<main>
+    <div class="glass-card">
+        <h1>Welcome to Employee Productivity Prediction</h1>
+        <p>
+            This web application predicts employee productivity based on multiple input parameters using AI-powered machine learning models.
+            Businesses can monitor, analyze, and optimize employee performance to enhance overall efficiency and output.
+        </p>
+        <div class="btn-container">
+            <a href="/predict" class="btn-large btn-primary">Start Prediction</a>
+            <a href="/about" class="btn-large btn-outline">Learn More</a>
+        </div>
+    </div>
+</main>
+

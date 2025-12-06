@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prediction Result | Employee Productivity</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+
+    body {
+        min-height:100vh;
+        display:flex;
+        flex-direction:column;
+        background: linear-gradient(rgba(123,104,238,0.85), rgba(123,104,238,0.85)),
+                    url('https://img.freepik.com/free-vector/business-team-brainstorming-discussing-startup-project_74855-6909.jpg?w=2000');
+        background-size:cover;
+        background-position:center;
+        background-blend-mode:multiply;
+    }
+
+    nav {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0 20px;
+        height:60px;
+        background-color: rgba(44,44,44,0.95);
+        position: sticky;
+        top:0;
+        z-index:10;
+    }
+    .nav-buttons { display:flex; gap:10px; }
+    .btn {
+        padding:8px 18px;
+        border:none;
+        border-radius:6px;
+        font-size:1rem;
+        cursor:pointer;
+        transition:0.2s;
+        font-weight:500;
+        background:#68cadd;
+    }
+
+    main { flex:1; display:flex; justify-content:center; padding:40px 20px; }
+    .glass-card {
+        width:100%;
+        max-width:1200px;
+        background:rgba(255,255,255,0.5);
+        backdrop-filter:blur(12px);
+        padding:40px;
+        border-radius:15px;
+        text-align:center;
+        box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .result-title { font-size:2rem; font-weight:700; margin-bottom:10px; }
+    .result-message { font-size:1.3rem; margin-bottom:30px; }
+
+    .charts-container {
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+        gap:25px;
+        margin-top:20px;
+    }
+
+    .chart-card {
+        background:rgba(255,255,255,0.9);
+        padding:20px;
+        border-radius:15px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    canvas { width:100% !important; height:300px !important; }
+
+    @media (max-width: 768px) {
+        .charts-container { grid-template-columns:1fr; }
+        canvas { height:250px !important; }
+    }
+
+    .standalone-title {
+        font-size:1.6rem;
+        margin-top:40px;
+        font-weight:600;
+        color:#fff;
+    }
+
+    .table-container { width:100%; overflow-x:auto; margin-top:25px; }
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-buttons">
+        <button class="btn" onclick="window.location.href='{{ url_for('home') }}'">Home</button>
+        <button class="btn" onclick="window.location.href='{{ url_for('about') }}'">About</button>
+        <button class="btn" onclick="window.location.href='{{ url_for('predict_page') }}'">Predict</button>
+        <button class="btn" onclick="window.location.href='{{ url_for('submit_page') }}'">Results</button>
+    </div>
+</nav>
+
+<main>
+<div class="glass-card">
+
+    <div class="result-title">Prediction Result</div>
+    <div class="result-message">
+        {% if prediction_text %}
+            Based on the input data, <strong>{{ prediction_text }}</strong>.
+        {% else %}
+            Prediction data not available.
+        {% endif %}
+    </div>
+
+    {% if charts %}
+    <div class="charts-container">
+        <div class="chart-card"><canvas id="weeklyChart"></canvas></div>
+        <div class="chart-card"><canvas id="longTermChart"></canvas></div>
+        <div class="chart-card"><canvas id="focusChart"></canvas></div>
+        <div class="chart-card"><canvas id="resourceChart"></canvas></div>
+        <div class="chart-card"><canvas id="idleOvertimeChart"></canvas></div>
+        <div class="chart-card"><canvas id="qualityChart"></canvas></div>
+    </div>
+    {% endif %}
+
+    {% if bulk %}
+    <div class="table-container">
+        {{ table|safe }}
+    </div>
+    {% endif %}
+
+    <div class="standalone-title">Productivity Trend Visualization</div>
+    <canvas id="prodChart" width="400" height="200" style="margin-top:20px;"></canvas>
+
+</div>
+</main>
+
+{% if charts %}
+<script>
+    const weeklyData = {{ charts.weekly|tojson }};
+    const longTermData = {{ charts.long_term|tojson }};
+    const focusData = {{ charts.focus_score|tojson }};
+    const resourceData = {{ charts.resource_allocation|tojson }};
+    const idleOvertimeData = {{ charts.idle_vs_overtime|tojson }};
+    const qualityData = {{ charts.quality_metrics|tojson }};
+
+    new Chart(document.getElementById('weeklyChart'), { type:'bar', data:{ labels:['Mon','Tue','Wed','Thu','Fri'], datasets:[{ data:weeklyData }] } });
+    new Chart(document.getElementById('longTermChart'), { type:'line', data:{ labels: longTermData.map((_,i)=>`Week ${i+1}`), datasets:[{ data:longTermData }] } });
+    new Chart(document.getElementById('focusChart'), { type:'doughnut', data:{ labels:['Focus','Idle'], datasets:[{ data:focusData }] } });
+    new Chart(document.getElementById('resourceChart'), { type:'bar', data:{ labels:['Work','Idle','Other'], datasets:[{ data:resourceData }] } });
+    new Chart(document.getElementById('idleOvertimeChart'), { type:'bar', data:{ labels:['Idle','OT','Remaining'], datasets:[{ data:idleOvertimeData }] } });
+    new Chart(document.getElementById('qualityChart'), { type:'bar', data:{ labels:['SMV','Styles','Incentive'], datasets:[{ data:qualityData }] } });
+</script>
+{% endif %}
+
+{% if months and values %}
+<script>
+    const monthsData = {{ months|tojson }};
+    const valuesData = {{ values|tojson }};
+
+    const formattedMonths = monthsData.map(ts => {
+        const d = new Date(ts);
+        const day = String(d.getDate()).padStart(2,'0');
+        const month = String(d.getMonth()+1).padStart(2,'0');
+        return `${day}/${month}`;
+    });
+
+    new Chart(document.getElementById('prodChart'), {
+        type: 'line',
+        data: {
+            labels: formattedMonths,
+            datasets: [{
+                label: 'Predicted Productivity',
+                data: valuesData,
+                borderWidth: 2,
+                tension: 0.35,
+                borderColor: '#2E86C1',
+                backgroundColor: 'rgba(46, 134, 193, 0.2)'
+            }]
+        },
+        options: {
+            scales: {
+                x: { title: { display:true, text:'Date (DD/MM)' } },
+                y: { beginAtZero:true, title: { display:true, text:'Productivity' } }
+            }
+        }
+    });
+</script>
+{% endif %}
+
+</body>
+</html>
