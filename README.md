@@ -5,7 +5,7 @@
 This project aims to predict garment factory worker productivity using machine learning models. It leverages historical employee performance data to forecast daily productivity, helping HR and managers optimize workforce allocation, improve efficiency, and make data-driven decisions.
 
 ## **📂 Project Structure**
-
+   ```bash
 Employee-Performance-Prediction/  
 │  
 ├── Dataset/  
@@ -30,7 +30,7 @@ Employee-Performance-Prediction/
 │   └── mcle.pkl                              # Optional alternate model  
 │  
 └── README.md                                 # Project documentation
-
+   ```
 ## **📊 Dataset Description**
 
 The dataset tracks daily productivity metrics of sewing and finishing teams in a garment factory.
