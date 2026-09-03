@@ -1,4 +1,58 @@
-# **Employee Performance Prediction** 
+# Employee Performance Prediction
+
+![License](https://img.shields.io/badge/license-MIT-green) ![Language](https://img.shields.io/badge/language-Python-informational)
+
+
+## 📌 Overview
+
+A Flask-based ML project predicting employee productivity using XGBoost and visualization of results.
+
+## 🏗️ Architecture
+
+```text
+Browser / UI
+     │   HTTP
+     ▼
+Flask app
+     │
+     └──▶ ML models — scikit-learn, XGBoost
+```
+
+## 🧰 Tech Stack
+
+- **Language:** Python
+- **Backend:** Flask
+- **ML:** scikit-learn, XGBoost
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10+
+
+### 1. Clone
+
+```bash
+git clone https://github.com/SabarishR08/Employee-Performance-Prediction.git
+cd Employee-Performance-Prediction
+```
+
+### 2. Install dependencies
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 4. Run
+
+```bash
+python Flask/app.py
+```
+
+
+---
 
 ## **Project Overview**
 
@@ -138,3 +192,9 @@ The dataset tracks daily productivity metrics of sewing and finishing teams in a
 * [LinkedIn Profile](https://www.linkedin.com/in/sabarishr08)
 
 *If you find this project useful, please give it a star on GitHub! ⭐*
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) — © 2026 Sabarish R.
